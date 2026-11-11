@@ -1,10 +1,14 @@
-﻿namespace LifeManagementApp
+﻿using LifeManagementApp.Views;
+
+namespace LifeManagementApp;
+
+public partial class AppShell : Shell
 {
-    public partial class AppShell : Shell
+    public AppShell()
     {
-        public AppShell()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+
+        // Rekisteröidään AddTodoPage Shell-reitiksi, jotta sille voidaan navigoida ja välittää parametreja
+        Routing.RegisterRoute(nameof(AddTodoPage), typeof(AddTodoPage));
     }
 }

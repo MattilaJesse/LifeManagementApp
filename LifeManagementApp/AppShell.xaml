@@ -3,12 +3,19 @@
     x:Class="LifeManagementApp.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:LifeManagementApp"
+    xmlns:views="clr-namespace:LifeManagementApp.Views"
     Title="LifeManagementApp">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+    <TabBar>
+        <ShellContent
+            Title="Etusivu"
+            ContentTemplate="{DataTemplate views:HomePage}"
+            Route="HomePage" />
+
+        <ShellContent
+            Title="Tehtävät"
+            ContentTemplate="{DataTemplate views:TodoListPage}"
+            Route="TodoListPage" />
+    </TabBar>
 
 </Shell>
