@@ -36,7 +36,7 @@
 
                     <!-- Säätiedot -->
                     <VerticalStackLayout Spacing="6"
-                                         IsVisible="{Binding CurrentWeather, Converter={x:Null}, TargetNullValue=False}">
+                                         IsVisible="{Binding HasWeather}">
                         <HorizontalStackLayout Spacing="20">
                             <Label FontSize="18">
                                 <Label.FormattedText>

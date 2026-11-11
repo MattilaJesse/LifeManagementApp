@@ -18,6 +18,9 @@ public partial class HomeViewModel : ObservableObject
     private WeatherInfo? _currentWeather;
 
     [ObservableProperty]
+    private bool _hasWeather;
+
+    [ObservableProperty]
     private bool _isLoading;
 
     [ObservableProperty]
@@ -57,10 +60,11 @@ public partial class HomeViewModel : ObservableObject
 
             // 2. Haetaan tämänhetkinen sää Vaasasta
             CurrentWeather = await _weatherService.GetCurrentWeatherAsync();
+            HasWeather = CurrentWeather is not null;
         }
         catch (Exception ex)
         {
-            // Osa-alue 7 (5/5 p): Jos verkkoa ei ole, näytetään virheilmoitus eikä kaaduta
+            HasWeather = false;
             HasWeatherError = true;
             WeatherError = $"Säätietojen haku epäonnistui: {ex.Message}";
         }
