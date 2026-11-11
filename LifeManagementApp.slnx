@@ -2,6 +2,7 @@
   <Folder Name="/Solution Items/">
     <File Path="README.md" />
   </Folder>
+  <Project Path="LifeManagementApp.Tests/LifeManagementApp.Tests.csproj" />
   <Project Path="LifeManagementApp/LifeManagementApp.csproj">
     <Deploy Solution="Debug|*" />
   </Project>
