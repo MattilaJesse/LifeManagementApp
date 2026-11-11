@@ -31,7 +31,7 @@ public partial class TodoListPage : ContentPage
         {
             // Päivitetään tila tietokantaan
             item.IsDone = e.Value;
-            await _viewModel.ToggleDoneCommand.ExecuteAsync(null);
+            await _viewModel.UpdateTodoStatusCommand.ExecuteAsync(item);
         }
     }
 }
