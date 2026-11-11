@@ -1,3 +1,8 @@
 <Solution>
-  <Project Path="LifeManagementApp/LifeManagementApp.csproj" />
+  <Folder Name="/Solution Items/">
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="LifeManagementApp/LifeManagementApp.csproj">
+    <Deploy Solution="Debug|*" />
+  </Project>
 </Solution>
