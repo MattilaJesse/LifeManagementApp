@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:LifeManagementApp.ViewModels"
+             xmlns:models="clr-namespace:LifeManagementApp.Models"
+             xmlns:conv="clr-namespace:LifeManagementApp.Converters"
+             x:Class="LifeManagementApp.Views.HomePage"
+             x:DataType="vm:HomeViewModel"
+             Title="Etusivu">
+
+    <ContentPage.Resources>
+        <conv:PriorityToColorConverter x:Key="PriorityColorConverter" />
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+
+            <!-- Latausindikaattori -->
+            <ActivityIndicator IsRunning="{Binding IsLoading}"
+                               IsVisible="{Binding IsLoading}"
+                               HorizontalOptions="Center" />
+
+            <!-- Sääkortti -->
+            <Border StrokeShape="RoundRectangle 12"
+                    Padding="16"
+                    StrokeThickness="1">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Sää nyt (Vaasa)"
+                           FontSize="20"
+                           FontAttributes="Bold" />
+
+                    <!-- Virheilmoitus jos verkkoa ei ole -->
+                    <Label Text="{Binding WeatherError}"
+                           TextColor="Crimson"
+                           IsVisible="{Binding HasWeatherError}" />
+
+                    <!-- Säätiedot -->
+                    <VerticalStackLayout Spacing="6"
+                                         IsVisible="{Binding CurrentWeather, Converter={x:Null}, TargetNullValue=False}">
+                        <HorizontalStackLayout Spacing="20">
+                            <Label FontSize="18">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Lämpötila: " FontAttributes="Bold" />
+                                        <Span Text="{Binding CurrentWeather.Temperature, StringFormat='{0:F1} °C'}" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+
+                            <Label FontSize="18">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Tuuli: " FontAttributes="Bold" />
+                                        <Span Text="{Binding CurrentWeather.WindSpeed, StringFormat='{0:F1} m/s'}" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                        </HorizontalStackLayout>
+
+                        <!-- Kitesurf-huomio kun tuuli > 5 m/s -->
+                        <Border BackgroundColor="#E0F7FA"
+                                Stroke="#00ACC1"
+                                StrokeShape="RoundRectangle 8"
+                                Padding="10"
+                                IsVisible="{Binding CurrentWeather.IsKitesurfWeather}">
+                            <Label Text="🪁 Kitesurf-keli! Tuuli yli 5 m/s."
+                                   TextColor="#006064"
+                                   FontAttributes="Bold"
+                                   FontSize="16" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <Button Text="Päivitä tiedot"
+                            Command="{Binding LoadDataCommand}"
+                            HorizontalOptions="Start" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- 3 tärkeintä tehtävää -->
+            <Label Text="3 tärkeintä tehtävää"
+                   FontSize="20"
+                   FontAttributes="Bold" />
+
+            <CollectionView ItemsSource="{Binding TopTodos}"
+                            EmptyView="Ei keskeneräisiä tehtäviä!">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:TodoItem">
+                        <Border StrokeShape="RoundRectangle 10"
+                                Padding="12"
+                                Margin="0,0,0,10"
+                                StrokeThickness="1">
+                            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                                <!-- Prioriteettipallo converterilla -->
+                                <BoxView Grid.Column="0"
+                                         WidthRequest="14"
+                                         HeightRequest="14"
+                                         CornerRadius="7"
+                                         VerticalOptions="Center"
+                                         Color="{Binding Priority, Converter={StaticResource PriorityColorConverter}}" />
+
+                                <VerticalStackLayout Grid.Column="1" Spacing="2">
+                                    <Label Text="{Binding Title}"
+                                           FontSize="16"
+                                           FontAttributes="Bold" />
+                                    <Label Text="{Binding Category.Name, StringFormat='Kategoria: {0}'}"
+                                           FontSize="12"
+                                           TextColor="Gray" />
+                                </VerticalStackLayout>
+
+                                <VerticalStackLayout Grid.Column="2" HorizontalOptions="End">
+                                    <Label Text="{Binding Priority, StringFormat='Prio {0}'}"
+                                           FontAttributes="Bold"
+                                           HorizontalOptions="End" />
+                                    <Label Text="{Binding DueDate, StringFormat='{0:dd.MM.yyyy}'}"
+                                           FontSize="12"
+                                           TextColor="Gray" />
+                                </VerticalStackLayout>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
